@@ -82,4 +82,4 @@ def request_too_large(_error):
 if __name__ == "__main__":
     print(f"Starting the local programming assistant at http://127.0.0.1:{PORT}")
     print("Press Ctrl+C to stop. The app does not call external AI APIs.")
-    app.run(host="0.0.0.0", port=PORT, debug=False)
+    app.run(host="127.0.0.1", port=PORT, debug=False)
