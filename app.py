@@ -2,14 +2,18 @@
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 from threading import Lock
 
 from flask import Flask, jsonify, render_template, request
+from dotenv import load_dotenv
 
 from local_llm.assistant import ProgrammingAssistant
 
 BASE_DIR = Path(__file__).resolve().parent
+load_dotenv(BASE_DIR / ".env")
+PORT = int(os.getenv("PORT", "5000"))
 DATASET_PATH = BASE_DIR / "dataset" / "programming_qa.jsonl"
 CHECKPOINT_PATH = BASE_DIR / "artifacts" / "minigpt.pt"
 
@@ -76,6 +80,6 @@ def request_too_large(_error):
 
 
 if __name__ == "__main__":
-    print("Starting the local programming assistant at http://127.0.0.1:5000")
+    print(f"Starting the local programming assistant at http://127.0.0.1:{PORT}")
     print("Press Ctrl+C to stop. The app does not call external AI APIs.")
-    app.run(host="0.0.0.0", port=5000, debug=False)
+    app.run(host="0.0.0.0", port=PORT, debug=False)

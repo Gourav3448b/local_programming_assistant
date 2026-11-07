@@ -101,7 +101,7 @@ After training finishes:
 python app.py
 ```
 
-Open **http://127.0.0.1:5000** in your browser. Keep the terminal open while using the app. Press `Ctrl+C` in the terminal to stop it.
+The server port is read from `PORT` in the project-root `.env` file (default: `5000`). Change that value to use a different port. Open **http://127.0.0.1:<PORT>** in your browser. Keep the terminal open while using the app. Press `Ctrl+C` in the terminal to stop it.
 
 The Flask server binds to `127.0.0.1`, so it is intended for local use on your own computer.
 
