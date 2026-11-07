@@ -4,8 +4,12 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-import torch
+from typing import TYPE_CHECKING
+
 from .tokenizer import ByteTokenizer, BOS_ID, EOS_ID
+
+if TYPE_CHECKING:
+    import torch
 
 
 PROMPT_TEMPLATE = "### User:\n{question}\n### Assistant:\n{answer}\n"
@@ -35,6 +39,8 @@ def load_examples(path: str | Path) -> list[dict[str, str]]:
 
 
 def build_training_stream(examples: list[dict[str, str]], tokenizer: ByteTokenizer) -> torch.Tensor:
+    import torch
+
     token_ids: list[int] = []
     for item in examples:
         text = f"### User:\n{item['question']}\n### Assistant:\n{item['answer']}\n"
@@ -48,6 +54,8 @@ def get_batch(
     block_size: int,
     device: torch.device,
 ) -> tuple[torch.Tensor, torch.Tensor]:
+    import torch
+
     if data.numel() <= block_size + 1:
         raise ValueError("Training dataset is too short for the selected block_size")
     starts = torch.randint(0, data.numel() - block_size - 1, (batch_size,))

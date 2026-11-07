@@ -29,7 +29,11 @@ def get_assistant() -> ProgrammingAssistant:
     if _assistant is None:
         with _assistant_lock:
             if _assistant is None:
-                _assistant = ProgrammingAssistant(DATASET_PATH, CHECKPOINT_PATH)
+                _assistant = ProgrammingAssistant(
+                    DATASET_PATH,
+                    CHECKPOINT_PATH,
+                    enable_model=not bool(os.getenv("VERCEL")),
+                )
     return _assistant
 
 

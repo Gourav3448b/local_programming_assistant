@@ -19,7 +19,7 @@ A local programming tutor built with **Python, PyTorch, and Flask**. It includes
 ## 1. Requirements
 
 - Python 3.10 or newer (Python 3.11/3.12 is a good general choice; Python 3.13 also works with a compatible PyTorch release).
-- PyTorch 2.2 or newer.
+- PyTorch 2.2 or newer for local model training and inference.
 - Flask 3.x.
 - 4 GB RAM minimum is recommended for the small CPU configuration; more memory gives more room for experiments.
 
@@ -35,7 +35,7 @@ Open a terminal in the project folder.
 py -3 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
-pip install -r requirements.txt
+pip install -r requirements-local.txt
 ```
 
 If PowerShell blocks virtual-environment activation, use Command Prompt and run:
@@ -50,7 +50,7 @@ If PowerShell blocks virtual-environment activation, use Command Prompt and run:
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
-pip install -r requirements.txt
+pip install -r requirements-local.txt
 ```
 
 If PyTorch installation is difficult on your machine, use the official PyTorch installation selector to choose the correct CPU/CUDA command for your operating system and Python version. Then install Flask with `pip install Flask`.
