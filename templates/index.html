@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fdf5e8">
+  <meta name="description" content="A locally trained, API-free programming learning assistant.">
+  <title>CodeMentor — Local AI Programming Tutor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Figtree:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="/" aria-label="CodeMentor home">
+        <span class="brand-mark">&lt;/&gt;</span>
+        <span><strong>CodeMentor</strong><small>LOCAL LEARNING LAB</small></span>
+      </a>
+
+      <button class="new-chat" id="newChatButton" type="button"><span>＋</span> New conversation</button>
+
+      <div class="side-section-label">LEARNING TOOLS</div>
+      <button class="side-link active" data-prompt="Explain a programming concept step by step, with a small example." type="button"><span>⌘</span> Concept tutor</button>
+      <button class="side-link" data-prompt="Give me a beginner-friendly Python practice question and a hint, but do not reveal the solution immediately." type="button"><span>◈</span> Practice question</button>
+      <button class="side-link" data-prompt="Help me debug this code. Explain the likely issue and ask me for any missing details." type="button"><span>⌁</span> Debugging help</button>
+      <button class="side-link" data-prompt="Explain time complexity with a practical example." type="button"><span>◷</span> DSA concepts</button>
+
+      <div class="sidebar-bottom">
+        <div class="local-card">
+          <div class="local-card-icon">⌂</div>
+          <div><strong>Runs on your device</strong><p>No hosted AI API or API key.</p></div>
+        </div>
+        <div class="sidebar-foot">A small model trained from scratch</div>
+      </div>
+    </aside>
+
+    <main class="main-panel">
+      <header class="topbar">
+        <div class="mobile-brand"><span class="brand-mark">&lt;/&gt;</span><strong>CodeMentor</strong></div>
+        <div class="topbar-spacer"></div>
+        <div class="status-pill" id="modelStatus"><span class="status-dot"></span><span id="statusText">Checking local model…</span></div>
+        <button class="icon-button" id="aboutButton" type="button" aria-label="About this project" title="About this project">ⓘ</button>
+      </header>
+
+      <section class="content-area">
+        <div class="welcome" id="welcomePanel">
+          <!-- decorative only: safe to delete, nothing depends on it -->
+          <div class="deco" aria-hidden="true">
+            <figure class="polaroid p1" data-drag>
+              <div class="photo photo-code"><pre>def loop(n):
+  for i in range(n):
+    print(i)</pre></div>
+              <figcaption>My first loop</figcaption>
+            </figure>
+            <figure class="polaroid p2" data-drag>
+              <div class="photo photo-tree"><svg viewBox="0 0 100 70"><g stroke="#fff" stroke-width="2" fill="none"><path d="M50 12 25 35M50 12 75 35M25 35 12 58M25 35 38 58M75 35 62 58M75 35 88 58"/></g><g fill="#fff"><circle cx="50" cy="12" r="6"/><circle cx="25" cy="35" r="5"/><circle cx="75" cy="35" r="5"/><circle cx="12" cy="58" r="4"/><circle cx="38" cy="58" r="4"/><circle cx="62" cy="58" r="4"/><circle cx="88" cy="58" r="4"/></g></svg></div>
+              <figcaption>BFS vs DFS</figcaption>
+            </figure>
+            <span class="ruler"></span>
+            <span class="pencil"></span>
+            <span class="note-tile">O(n)</span>
+          </div>
+
+          <div class="eyebrow"><span class="eyebrow-line"></span> YOUR PERSONAL PROGRAMMING LAB</div>
+          <h1>Learn to think.<br><span>Then write the code.</span></h1>
+          <p class="welcome-copy">Ask programming questions, explore data structures, and understand the reasoning behind solutions — powered by a tiny language model trained locally from scratch.</p>
+
+          <div class="starter-grid">
+            <button class="starter-card" data-prompt="What is recursion? Explain it with a simple example and show how the call stack behaves." type="button">
+              <span class="starter-icon violet">↻</span><strong>Understand recursion</strong><small>Follow a function call step by step</small><span class="starter-arrow">↗</span>
+            </button>
+            <button class="starter-card" data-prompt="Compare BFS and DFS. Explain when I should use each one." type="button">
+              <span class="starter-icon blue">⌘</span><strong>Explore graph algorithms</strong><small>Compare BFS and DFS</small><span class="starter-arrow">↗</span>
+            </button>
+            <button class="starter-card" data-prompt="Explain Big O notation with examples of O(1), O(n), and O(n squared)." type="button">
+              <span class="starter-icon orange">⌁</span><strong>Master time complexity</strong><small>Build intuition for Big O</small><span class="starter-arrow">↗</span>
+            </button>
+            <button class="starter-card" data-prompt="Give me a Python OOP practice question. First explain the concept I need, then give a hint." type="button">
+              <span class="starter-icon green">▣</span><strong>Practice Python OOP</strong><small>Learn classes and objects</small><span class="starter-arrow">↗</span>
+            </button>
+          </div>
+          <div class="welcome-note"><span>✳</span> This is an educational mini-model, not a large commercial LLM. Answers may be incomplete.</div>
+        </div>
+
+        <div class="chat-stream" id="chatStream" aria-live="polite"></div>
+      </section>
+
+      <footer class="composer-wrap">
+        <form class="composer" id="chatForm">
+          <textarea id="messageInput" rows="1" maxlength="2000" placeholder="Ask a programming question…" aria-label="Your programming question"></textarea>
+          <div class="composer-bottom">
+            <div class="composer-hint"><span>↵</span> Enter to send · Shift + Enter for a new line</div>
+            <div class="composer-actions"><span id="charCount">0 / 2000</span><button id="sendButton" type="submit" aria-label="Send message"><span>↑</span></button></div>
+          </div>
+        </form>
+        <p class="disclaimer">Local educational prototype · Verify important code and explanations before using them.</p>
+      </footer>
+    </main>
+  </div>
+
+  <dialog id="aboutDialog" class="about-dialog">
+    <div class="dialog-head"><div><span class="eyebrow">ABOUT THE PROJECT</span><h2>How CodeMentor works</h2></div><button id="closeDialog" class="icon-button" type="button" aria-label="Close">×</button></div>
+    <p>This project trains a compact GPT-style Transformer from random initialization using PyTorch. It combines the trained model with a small local programming Q&amp;A retriever.</p>
+    <div class="about-list"><div><strong>01 / Train</strong><span>MiniGPT learns next-byte prediction from the included dataset.</span></div><div><strong>02 / Retrieve</strong><span>A local TF-IDF search finds relevant programming examples.</span></div><div><strong>03 / Respond</strong><span>The app selects a relevant reference or displays the local model's draft.</span></div></div>
+    <p class="dialog-note">No external model API is called. The model is intentionally small, so its free-form generations are experimental.</p>
+  </dialog>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+  <!-- decorative drag for the polaroids; independent of app.js -->
+  <script>
+    document.querySelectorAll('[data-drag]').forEach(function (el) {
+      var sx, sy, ox = 0, oy = 0;
+      el.addEventListener('pointerdown', function (e) {
+        sx = e.clientX - ox; sy = e.clientY - oy;
+        el.setPointerCapture(e.pointerId); el.classList.add('dragging');
+      });
+      el.addEventListener('pointermove', function (e) {
+        if (!el.classList.contains('dragging')) return;
+        ox = e.clientX - sx; oy = e.clientY - sy;
+        el.style.setProperty('--x', ox + 'px'); el.style.setProperty('--y', oy + 'px');
+      });
+      ['pointerup', 'pointercancel'].forEach(function (t) {
+        el.addEventListener(t, function () { el.classList.remove('dragging'); });
+      });
+    });
+  </script>
+</body>
+</html>
